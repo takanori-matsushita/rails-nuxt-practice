@@ -8,4 +8,6 @@ class User < ApplicationRecord
   uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }
   has_secure_password
+  # jsonにpasswordが表示されるので、必要なカラムを取り出す
+  scope :secure, -> { select("id", "name", "email", "created_at", "updated_at") }
 end
