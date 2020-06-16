@@ -25,6 +25,9 @@ reset: ## Run rails db:migrate:reset
 seed: ## Run rails db:seed
 	docker-compose run --rm ruby bundle exec rails db:seed
 
+rspec: ## Run rspec
+	docker-compose run --rm ruby bundle exec rspec
+
 attach: ## Attach running web container for binding.pry
 	docker attach `docker ps -f name=rails_ruby -f status=running --format "{{.ID}}"`
 
