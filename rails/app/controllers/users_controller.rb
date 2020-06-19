@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def show
     @user = User.secure.find_by(id: params[:id])
-    return render json: { user: @user, gravatar_image: gravatar_for(user) }, status: :ok if @user
+    return render json: { user: @user, gravatar_image: gravatar_for(@user) }, status: :ok if @user
     render json: { error: 'user not found' }, status: :not_found
   end
 
