@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Authentications", type: :request do
-  before :each do
+  before(:each) do
     @user = User.create(name: "Example User", email: "user@example.com",
       password: "foobar", password_confirmation: "foobar")
   end

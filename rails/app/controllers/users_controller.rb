@@ -1,4 +1,11 @@
 class UsersController < ApplicationController
+  before_action :authorize_request, only: [:index, :update, :destroy]
+  
+  def index
+    @users = User.secure.page(params[:page]).per(30)
+    render json: @users, status: :ok
+  end
+
   def show
     @user = User.secure.find_by(id: params[:id])
     return render json: { user: @user, gravatar_image: gravatar_for(@user) }, status: :ok if @user
@@ -13,7 +20,23 @@ class UsersController < ApplicationController
       render json: { error: @user.errors }, status: :unprocessable_entity
     end
   end
+
+  def update
+    if @current_user.update(user_params)
+      render json: @current_user, status: :ok
+    else
+      render json: { error: @current_user.errors }, status: :unprocessable_entity
+    end
+  end
   
+  def destroy
+    if @current_user.admin?
+      User.find(params[:id]).destroy
+      return render json: { success: "user deleted" }, status: :ok
+    end
+    render json: { error: "no admin rights" }, status: :forbidden
+  end
+
   private
   
     def user_params
