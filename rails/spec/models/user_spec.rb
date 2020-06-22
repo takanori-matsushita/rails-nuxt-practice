@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   #before :eachで各テストを実行する前に共通の処理を行うことができる
-  before :each do
+  before(:each) do
     @user = User.new(name: "Example User", email: "user@example.com",
       password: "foobar", password_confirmation: "foobar")
   end
