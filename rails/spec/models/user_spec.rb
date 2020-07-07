@@ -74,4 +74,10 @@ RSpec.describe User, type: :model do
     @user.password = @user.password_confirmation = "a" * 5
     expect(@user.valid?).to be_falsey
   end
+
+  it "associated microposts should be destroyed" do
+    @user.save
+    create(:orange, user: @user)
+    expect{ @user.destroy }.to change(Micropost, :count).by(-1)
+  end
 end
