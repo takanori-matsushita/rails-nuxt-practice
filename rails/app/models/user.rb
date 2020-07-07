@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy
   # データを保存する前に実行する
   before_save { email.downcase! }
   validates :name,  presence: true, length: { maximum: 50 }
@@ -10,4 +11,8 @@ class User < ApplicationRecord
   has_secure_password
   # jsonにpasswordが表示されるので、必要なカラムを取り出す
   scope :secure, -> { select("id", "name", "email", "created_at", "updated_at") }
+
+  def feed
+    Micropost.where("user_id = ?", id)
+  end
 end
