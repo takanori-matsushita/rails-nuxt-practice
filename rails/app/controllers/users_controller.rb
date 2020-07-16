@@ -1,13 +1,12 @@
 class UsersController < ApplicationController
-  before_action :authorize_request, only: [:index, :update, :destroy]
-  
+  before_action :authorize_request, only: [:index, :update, :destroy, :following, :followers]
+  before_action :set_user, only: [:show, :following, :followers]
   def index
     @users = User.secure.page(params[:page]).per(30)
     render json: @users, status: :ok
   end
 
   def show
-    @user = User.secure.find_by(id: params[:id])
     @microposts = @user.microposts.page(params[:page]).per(30)
     return render json: { user: @user, microposts: @microposts, gravatar_image: gravatar_for(@user) }, status: :ok if @user
     render json: { error: 'user not found' }, status: :not_found
@@ -38,8 +37,22 @@ class UsersController < ApplicationController
     render json: { error: "no admin rights" }, status: :forbidden
   end
 
+  def following
+    @users = @user.following.secure.page(params[:page]).per(30)
+    render json: { user: @user, following: @users }, status: :ok
+  end
+  
+  def followers
+    @users = @user.followers.secure.page(params[:page]).per(30)
+    render json: { user: @user, followers: @users }, status: :ok
+  end
+
   private
   
+    def set_user
+      @user = User.secure.find_by(id: params[:id])
+    end
+
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
