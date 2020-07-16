@@ -6,7 +6,7 @@ RSpec.describe Micropost, type: :model do
     create(:orange, user: @user)
     create(:tau_manifesto, user: @user)
     create(:cat_video, user: @user)
-    @micropost = create(:most_recent, user: @user)
+    @micropost = @user.microposts.build(content: :most_recent)
   end
 
   it "should be valid" do
@@ -29,6 +29,7 @@ RSpec.describe Micropost, type: :model do
   end
 
   it "order should be most recent first" do
+    @micropost.save
     expect(@micropost).to eq Micropost.first
   end
 end
