@@ -13,7 +13,7 @@
 export default {
   head() {
     return {
-      title: "Home",
+      titleTemplate: process.env.PROJECT_NAME,
     };
   },
 };
