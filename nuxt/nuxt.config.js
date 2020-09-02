@@ -24,7 +24,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ["@/assets/scss/app.scss"],
   /*
    ** Plugins to load before mounting the App
    */
@@ -38,7 +38,7 @@ export default {
    */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    "bootstrap-vue/nuxt",
+    ["bootstrap-vue/nuxt", { css: false }],
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     // Doc: https://github.com/nuxt-community/dotenv-module
